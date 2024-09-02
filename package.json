@@ -1,0 +1,25 @@
+{
+  "name": "my-turborepo",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo test",
+    "local-lint": "turbo @repo/local#lint"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^2.1.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@8.19.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
