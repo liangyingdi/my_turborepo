@@ -17,8 +17,8 @@ export default () => {
     return (
         <>
             {state.map((item: { id: number }) => (
-                <Link href={(item.id%2 === 0) ? `/af`: ''} key={item.id}>
-                {/* <Link href={(item.id%2 === 0) ? `${path}/item/${item.id}`: ''} key={item.id}> */}
+                // <Link href={(item.id%2 === 0) ? `/af`: ''} key={item.id}>
+                <Link href={(item.id%2 === 0) ? `${path}/item/${item.id}`: ''} key={item.id}>
                     <div key={item.id} style={{ width: '300px', height: '40px', background: theme, lineHeight: '40px', border: '1px solid white' }}>
                         {item.id}
                     </div>  

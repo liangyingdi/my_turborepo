@@ -2,12 +2,27 @@ export const generateStaticParams = async () => {
     return [
         {
             id: '1',
+            local: 'cn'
         },
         {
             id: '2',
+            local: 'cn'
         },
         {
             id: '3',
+            local: 'cn'
+        },
+        {
+            id: '1',
+            local: 'en'
+        },
+        {
+            id: '2',
+            local: 'en'
+        },
+        {
+            id: '3',
+            local: 'en'
         },
     ];
 };
