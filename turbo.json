@@ -1,12 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalPassThroughEnv": ["NAME"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "!README.md"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -15,11 +13,18 @@
       "cache": false,
       "persistent": true
     },
+    "web#lint": {
+
+    },
     "test": {
       "persistent": true
     },
-    "@repo/local#lint": {
-      "persistent": true
+    "test2": {
+      "dependsOn": ["test"],
+      "outputLogs": "new-only"
+    },
+    "web#start": {
+      "dependsOn": ["web#build"]
     }
   }
 }
