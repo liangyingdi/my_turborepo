@@ -3,25 +3,29 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { ReactNode, useEffect, useState } from "react";
-import { deleteCookie } from "../utils";
+import { checkCookie, deleteCookie } from "../utils";
 import LogoutModal from "./components/logoutModal";
 import { getThemeByUserIdAction } from "./setting/action";
+import { signOut } from "next-auth/react"
+import { usePathname } from "next/navigation";
 
 export default ({ children }: { children: ReactNode }) => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [theme, setTheme] = useState<ThemeItem>();
+    const path = usePathname();
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
     const confirmModal = async () => {
         // 调用函数删除登录Token
-        closeModal();
         await deleteCookie('token');
+        signOut({ callbackUrl: 'http://localhost:8080/login' })
+        closeModal();
     };
 
-    // useEffect(() => {
-    //     checkCookie();
-    // },[])
+    useEffect(() => {
+        checkCookie(path);
+    },[])
 
     useEffect(() => {
         getThemeColor();
@@ -46,7 +50,7 @@ export default ({ children }: { children: ReactNode }) => {
                 <div className={styles.leftWrapper}>
                     <Link href={`/list`}><button className={styles.leftButton}>List</button></Link><br />
                     <Link href={`/setting`}><button className={styles.leftButton}>Setting </button></Link><br />
-                    <Link href={`c`}><button className={styles.leftButton}>Client</button></Link><br />
+                    <Link href={`/client`}><button className={styles.leftButton}>Client</button></Link><br />
                 </div>
                 <div className={styles.rightWrapper}>
                     {children}

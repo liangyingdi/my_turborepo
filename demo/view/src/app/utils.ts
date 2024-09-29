@@ -7,10 +7,10 @@ export async function deleteCookie(name: string) {
     redirect('/login');
 }
 
-export const checkCookie = () => {
+export const checkCookie = (path: string) => {
     const { value } = cookies().get('token') ?? {};
     if (!!value) {
-        redirect('/');
+        redirect(path ? path : '/');
     } else {
         redirect('/login');
     }

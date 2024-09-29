@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "../index.module.css";
 import { getThemeByUserIdAction, updateThemeAction } from "../action";
+import Modal from "./modal";
 
 export const dynamic = 'force-dynamic';
 
 export const InputForm = () => {
     const [theme, setTheme] = useState<ThemeItem>();
     const [color, setColor] = useState("");
+    const [isModalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         getThemeColor();
@@ -33,10 +35,14 @@ export const InputForm = () => {
 
 
     const onConfirm = async () => {
-        if(theme && theme.id){
+        if (theme && theme.id) {
             const { code } = await updateThemeAction(theme.id, color);
-            if(code === 0) {
-                window.location.reload();
+            if (code === 0) {
+                setModalOpen(true);
+                setTimeout(() => {
+                    window.location.reload();
+                    setModalOpen(false);
+                }, 2000)
             }
         }
     }
@@ -44,5 +50,6 @@ export const InputForm = () => {
         <label>theme</label>&nbsp;
         <input className={styles.input} onChange={e => setColor(e.target.value)} /> <br />
         <button className={`${styles.button} ${styles.confirm}`} onClick={() => onConfirm()} disabled={color.length === 0}>添加</button>
+        <Modal isOpen={isModalOpen} />
     </div>
 }
