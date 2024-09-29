@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import styles from "./page.module.css";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { deleteCookie } from "../utils";
 import LogoutModal from "./components/logoutModal";
+import { getThemeByUserIdAction } from "./setting/action";
 
 export default ({ children }: { children: ReactNode }) => {
     const [isModalOpen, setModalOpen] = useState(false);
+    const [theme, setTheme] = useState<ThemeItem>();
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
@@ -21,9 +23,19 @@ export default ({ children }: { children: ReactNode }) => {
     //     checkCookie();
     // },[])
 
+    useEffect(() => {
+        getThemeColor();
+    }, [])
+
+    //获取颜色
+    const getThemeColor = async () => {
+        const { data } = await getThemeByUserIdAction();
+        setTheme(data[0]);
+    }
+
     return (
         <div>
-            <div className={styles.header}>
+            <div className={styles.header} style={{ backgroundColor: theme?.theme }}>
                 <div className={styles.title}>VIEW DEMO</div>
                 <div className={styles.info}>
                     <div>lyd</div>

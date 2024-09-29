@@ -1,9 +1,24 @@
 'use client';
 import { useRouter } from "next/navigation";
+import { getItemByIdAction } from "../../../../action";
+import { useEffect, useState } from "react";
 
-export default () => {
+export default ({ params }: { params: { id: string, user_id: string } }) => {
     const router = useRouter();
+    // const getItems = unstable_cache(async () => await getItemById(Number(params.id)), ["cache_item"], {
+    //     tags: ["cache_item"],
+    // });
 
+    const [item, setItem] = useState<UserItem>();
+
+    useEffect(() => {
+        getItemById()
+    }, [params])
+
+    const getItemById = async() => {
+        const {data} = await getItemByIdAction(Number(params.id));
+        setItem(data);
+    }
     return (
         <div
             style={{
@@ -26,9 +41,9 @@ export default () => {
                 padding: '20px',
                 margin: '0 auto'
             }}>
-                <div style={{ borderBottom: '1px solid #000' }}>id: 1</div>
-                <div style={{ borderBottom: '1px solid #000' }}>user_id: 1</div>
-                <div style={{ borderBottom: '1px solid #000' }}>name: 1</div>
+                <div style={{ borderBottom: '1px solid #000' }}>id: {params.id}</div>
+                <div style={{ borderBottom: '1px solid #000' }}>user_id: {params.user_id}</div>
+                <div style={{ borderBottom: '1px solid #000' }}>name: {item ? item.name: ""}</div>
                 <button style={{
                     marginTop: '20px',
                     float: 'right',

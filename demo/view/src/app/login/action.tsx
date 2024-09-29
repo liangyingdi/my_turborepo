@@ -26,7 +26,13 @@ export const authenticateUser = async (formdata: FormData): Promise<LoginRespons
                 cookies().set({
                     name: 'token',
                     value: token,
-                    maxAge: 120,
+                    maxAge: 60 * 60 * 24,
+                    httpOnly: true,
+                });
+                cookies().set({
+                    name: 'user_id',
+                    value: firstOne.id,
+                    maxAge: 60 * 60 * 24,
                     httpOnly: true,
                 });
                 // const jwt = sign({ username }, process.env.NAME || '', {

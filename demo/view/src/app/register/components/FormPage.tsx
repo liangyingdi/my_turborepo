@@ -14,8 +14,6 @@ export const FormPage = () => {
     const { data: sessionData, status } = useSession();
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
-    console.log(sessionData)
-    console.log(status)
 
     // const [_username, username, setUserName] = useInput({ name: 'username' });
     // const [_password, password] = useInput({ type: 'password', name: 'password', placeholder: '密码不能小于6位' });
