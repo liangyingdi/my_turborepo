@@ -40,7 +40,7 @@ export const FormPage = () => {
                 setSeconds(seconds - 1);
             } else {
                 clearInterval(intervalId);
-                checkCookie();
+                checkCookie("/");
             }
         }, 1000);
 
@@ -49,7 +49,7 @@ export const FormPage = () => {
 
     useEffect(() => {
         if (!data){
-            checkCookie();
+            checkCookie("/");
         }
     }, [data])
 

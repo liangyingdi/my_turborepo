@@ -10,7 +10,7 @@ export const authenticateUser = async (formdata: FormData): Promise<LoginRespons
 
     const username = formdata.get('username') as string;
     const password = formdata.get('password') as string;
-    
+
     return new Promise((resolve, reject) => {
         prisma.user.findMany({
             where: {
@@ -48,3 +48,27 @@ export const authenticateUser = async (formdata: FormData): Promise<LoginRespons
         });
     });
 };
+
+export const getUserByIdAction = async (): Promise<UsersResponse> => {
+    const prisma = new PrismaClient();
+    const { value } = cookies().get('user_id') ?? {};
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: Number(value)
+            },
+        })
+
+        return {
+            code: 0,
+            data: user
+        };
+    } catch (e) {
+        return {
+            code: 1,
+            data: {},
+            msg: '获取失败，请重新登录',
+        };
+    }
+}

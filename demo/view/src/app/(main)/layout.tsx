@@ -3,7 +3,7 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { ReactNode, useEffect, useState } from "react";
-import { checkCookie, deleteCookie } from "../utils";
+import { checkCookie, deleteCookie, getCookie } from "../utils";
 import LogoutModal from "./components/logoutModal";
 import { getThemeByUserIdAction } from "./setting/action";
 import { signOut } from "next-auth/react"
@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 export default ({ children }: { children: ReactNode }) => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [theme, setTheme] = useState<ThemeItem>();
+    const [username, setUserName] = useState("");
     const path = usePathname();
 
     const openModal = () => setModalOpen(true);
@@ -25,10 +26,11 @@ export default ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         checkCookie(path);
-    },[])
+    }, [])
 
     useEffect(() => {
         getThemeColor();
+        getUserName();
     }, [])
 
     //获取颜色
@@ -37,12 +39,20 @@ export default ({ children }: { children: ReactNode }) => {
         setTheme(data[0]);
     }
 
+    const getUserName = async() => {
+        const nameObj = await getCookie("token");
+        if(nameObj){
+            const name = JSON.parse(atob(nameObj));
+            setUserName(name.username);
+        }
+    }
+
     return (
         <div>
             <div className={styles.header} style={{ backgroundColor: theme?.theme }}>
                 <div className={styles.title}>VIEW DEMO</div>
                 <div className={styles.info}>
-                    <div>lyd</div>
+                    <div>{username}</div>
                     <button onClick={openModal}>logout</button>
                 </div>
             </div>

@@ -28,3 +28,8 @@ export const setCookie = (name: {[username: string]: string}) => {
     });
     redirect('/');
 }
+
+export const getCookie = (name: string) => {
+    const { value } = cookies().get(name) ?? {};
+    return value;
+}
