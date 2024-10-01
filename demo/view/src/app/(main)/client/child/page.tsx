@@ -1,13 +1,15 @@
-import Link from "next/link";
 import styles from "../index.module.css";
+import BackButton from "./backButton";
+import Link from "next/link";
 import { getCookie } from "@view/src/app/utils";
 
-export default async () => {
+export default async() => {
     const id = await getCookie("user_id");
 
     return (
         <div>
-            <button className={styles.button}>Back And Modify Cache</button><br />
+            <BackButton/>
+
             <Link href={`/client/child/${id}/${new Date().getSeconds()}`}>
                 <button className={styles.button}>
                     TO USER
