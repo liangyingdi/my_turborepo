@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export default async () => {
     getChildInfo();
-    await fetch('http://localhost:3001/api?time=5');
+    await fetch('http://localhost:8080/api/time?time=5');
 
     return (
         <div>
