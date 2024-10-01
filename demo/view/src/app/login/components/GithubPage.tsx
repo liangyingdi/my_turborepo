@@ -1,32 +1,45 @@
 'use client';
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import styles from "../../page.module.css";
 import Link from "next/link";
+import { action } from "../../register/action";
+import { useState } from "react";
+import { setCookie, setUserId } from "../../utils";
 
 export const GithubPage = () => {
-    // const { data, status } = useSession();
+    const { data: githubData, status } = useSession();
+    const [data, setData] = useState<resultType>();
+
+    const handleClick = async () => {
+        signIn('github', { callbackUrl: 'http://localhost:8080/register' });
+
+        if (githubData?.user?.name) {
+            const formData = new FormData();
+            formData.append('username', githubData.user.name);
+            formData.append('password', '');
+            try {
+                const data = await action(formData);
+                setData(data);
+                if(data) {
+                    setCookie({username: data.data.username});
+                    setUserId(data.data?.id || "");
+                }
+            } catch (error) {
+                alert(`catch error: ${(error as Error).message}`);
+            }
+        }
+    }
+
     return (
         <div>
-            {/* client
-            <hr />
-            status: {status}
-            <br />
-            data: {JSON.stringify(data)}
-            <hr />
-            <button onClick={() => signIn()}>sign in</button>
-            <br />
-            <button onClick={() => signIn('github', { callbackUrl: 'http://localhost:3000/auth' })}>sign in redirect</button>
-            <hr />
-            <button onClick={() => signOut()}>sign out</button>
-            <br />
-            <button onClick={() => signOut({ callbackUrl: 'http://localhost:3000/auth' })}>sign out redirect</button> */}
             <div className={styles.registerText}>AUTH_GITHUB_ID:{process.env.NEXT_PUBLIC_AUTH_GITHUB_ID}</div>
             <div className={styles.registerText}>NEXT_PUBLIC_AUTH_GITHUB_SECRET:{process.env.NEXT_PUBLIC_AUTH_GITHUB_SECRET}</div>
+            <div className={styles.error}>{data?.msg}</div>
             <div className={styles.registerGitHubCenter}>
                 <img
                     src="https://authjs.dev/img/providers/github.svg"
                     style={{ height: '50px' }}
-                    onClick={() => signIn('github', { callbackUrl: 'http://localhost:8080/register' })}
+                    onClick={handleClick}
                 />
                 <div>github login</div>
             </div>

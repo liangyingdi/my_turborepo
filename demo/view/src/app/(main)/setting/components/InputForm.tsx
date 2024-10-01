@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import styles from "../index.module.css";
-import { getThemeByUserIdAction, updateThemeAction } from "../action";
+import { addThemeAction, getThemeByUserIdAction, updateThemeAction } from "../action";
 import Modal from "./modal";
 
 export const dynamic = 'force-dynamic';
@@ -44,12 +44,21 @@ export const InputForm = () => {
                     setModalOpen(false);
                 }, 2000)
             }
+        } else {
+            const { code } = await addThemeAction(color);
+            if (code === 0) {
+                setModalOpen(true);
+                setTimeout(() => {
+                    window.location.reload();
+                    setModalOpen(false);
+                }, 2000)
+            }
         }
     }
     return <div className={styles.wrapper}>
         <label>theme</label>&nbsp;
         <input className={styles.input} onChange={e => setColor(e.target.value)} /> <br />
-        <button className={`${styles.button} ${styles.confirm}`} onClick={() => onConfirm()} disabled={color.length === 0}>添加</button>
+        <button className={`${styles.button} ${styles.confirm}`} onClick={() => onConfirm()} disabled={color.length === 0}>确认</button>
         <Modal isOpen={isModalOpen} />
     </div>
 }

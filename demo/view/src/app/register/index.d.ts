@@ -8,6 +8,7 @@ declare type LoginResponse = {
 declare type RegisterResponse = {
     code: LoginResponseCode,
     msg?: string,
+    data: any
 }
 
 

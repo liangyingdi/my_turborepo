@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from "next/navigation";
 import styles from "../../page.module.css";
-import { action } from "../action";
+import { action, updateUserAction } from "../action";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { setCookie } from "../../utils";
@@ -25,11 +25,32 @@ export const FormPage = () => {
         }
     }, [sessionData])
 
+    const handleAction = (formdata: FormData) => {
+        if(sessionData){
+            updateUser(0, password);
+        } else {
+            formActioin(formdata);
+        }
+    }
     const formActioin = async (formdata: FormData) => {
         setIsLoading(true);
         try {
             setTimeout(async () => {
                 const data = await action(formdata);
+                setData(data);
+                setIsLoading(false);
+            }, 1000)
+        } catch (error) {
+            alert(`catch error: ${(error as Error).message}`);
+            setIsLoading(false);
+        }
+    }
+
+    const updateUser =  async (id: number, password: string) => {
+        setIsLoading(true);
+        try {
+            setTimeout(async () => {
+                const data = await updateUserAction(id, password);
                 setData(data);
                 setIsLoading(false);
             }, 1000)
@@ -65,7 +86,7 @@ export const FormPage = () => {
                     <div>注册成功，{seconds}秒后自动跳转到登录页</div>
                     :
                     <div>
-                        <form action={formActioin} >
+                        <form action={handleAction} >
                             <div className={styles.error}>{data?.msg}</div>
                             <label htmlFor={"username"}>username</label><br />
                             <input id={"username"} name={"username"} type="text" onChange={e => setUserName(e.target.value)} value={username} />

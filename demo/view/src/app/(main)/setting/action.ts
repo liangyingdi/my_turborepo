@@ -62,3 +62,34 @@ export const getThemeByUserIdAction = async (): Promise<ThemeResponse> => {
         };
     }
 }
+
+export const addThemeAction = async (theme: string): Promise<AddResponse> => {
+    'use server';
+    const prisma = new PrismaClient();
+    const { value } = cookies().get('user_id') ?? {};
+
+    try {
+        const newThemeItem = await prisma.user_setting.create({
+            data: {
+                user_id: Number(value),
+                theme: theme,
+            }
+        });
+
+        if (newThemeItem.theme === theme) {
+            return {
+                code: 0,
+            };
+        } else {
+            return {
+                code: 1,
+                msg: '添加失败，请重试...',
+            };
+        }
+    } catch (e) {
+        return {
+            code: 1,
+            msg: '添加失败，请重试...',
+        };
+    }
+}

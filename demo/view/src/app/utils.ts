@@ -33,3 +33,13 @@ export const getCookie = (name: string) => {
     const { value } = cookies().get(name) ?? {};
     return value;
 }
+
+export const setUserId = (id: string) => {
+    cookies().set({
+        name: 'user_id',
+        value: id,
+        maxAge: 60 * 60 * 24,
+        httpOnly: true,
+    });
+    redirect('/');
+}
