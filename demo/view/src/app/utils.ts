@@ -17,9 +17,9 @@ export const checkCookie = (path: string) => {
 }
 
 export const setCookie = (name: {[username: string]: string}) => {
-    const token = btoa(JSON.stringify({
+    const token = btoa(JSON.stringify(
         name,
-    }));
+    ));
     cookies().set({
         name: 'token',
         value: token,
