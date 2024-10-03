@@ -4,7 +4,6 @@ import styles from "../../page.module.css";
 import Link from "next/link";
 import { action } from "../../register/action";
 import { useState } from "react";
-import { setCookie, setUserId } from "../../utils";
 
 export const GithubPage = () => {
     const { data: githubData, status } = useSession();
@@ -20,10 +19,6 @@ export const GithubPage = () => {
             try {
                 const data = await action(formData);
                 setData(data);
-                if(data) {
-                    setCookie({username: data.data.username});
-                    setUserId(data.data?.id || "");
-                }
             } catch (error) {
                 alert(`catch error: ${(error as Error).message}`);
             }
